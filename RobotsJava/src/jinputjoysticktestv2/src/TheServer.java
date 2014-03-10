@@ -1,33 +1,9 @@
-/*
-//------------------------------------------------------------//
-
-**************		****		****		**************		
-**************		****		****		**************
-****		 ****		****		****		****
-****		 ****		****		****		****
-**************		****		****		****
-**************		****		****		****
-****					****		****		****
-****					****		****		****
-****					*************		**************
-****					*************		**************		
-
--------------------------------------------------------------//
-Programmer				Date				Modification Reason
-
-Jaime Alvarez			01-31-14			Initial Implementation
-
-
-//-----------------------------------------------------------//
-
-Description:
-The main server application.
+/*The main server application.
 This application will be in charge
 of executing threads that will process
-Xbox 360 Controller input and position
+Xbox 360 Contorller input and position
 of the robots.
 */
-
 
 //For sockets
 import java.io.*;
@@ -51,23 +27,23 @@ class TheServer
    //A list to hold controllers
    private ArrayList<Controller> foundControllers = new ArrayList<>();
    
-   //Boolean to determine if any controllers are found
+   //Boolean to deteremine if any controllers are found
    private boolean controllersAreFound;
          
    //booleans to keep track which controllers are connected
-   private boolean playerOneIsConnected = false;
-   private boolean playerTwoIsConnected = false;
+   boolean playerOneIsConnected = false;
+   boolean playerTwoIsConnected = false;
       
    //IPs and Ports used
    //For player one and player two respectively
    //These are for the robots
-   private String[] RobotIPs = {"192.168.1.100", "192.168.1.153"};
-   private int[] RobotPorts = {8444, 5050};
+   String[] RobotIPs = {"192.168.1.107", "192.168.1.153"};
+   int[] RobotPorts = {5555, 5050};
    
    //For this application
    //It'll retrieve data such as position of the robot
-   private String ServerIP = "192.168.1.9";
-   private int ServerPort = 4489;
+   String ServerIP = "192.168.1.153";
+   int ServerPort = 4469;
    
    //The program doing its job
    public TheServer()
@@ -83,7 +59,7 @@ class TheServer
             ProcessUserInput QBSend = new ProcessUserInput("Player 1", foundControllers.get(0), RobotIPs[0], RobotPorts[0], QB, RC);
             //ProcessRobotPosition QBReceive = new ProcessRobotPosition("Player 1", foundControllers.get(0), ServerIP, ServerPort, QB);
             QBSend.setPriority(10);
-            //QBReceive.setPriority(8);
+            //QBReceive.setPriority(2);
             QBSend.start();
             //QBReceive.start(); 
          }   
@@ -92,13 +68,13 @@ class TheServer
       {
          System.out.println("No controllers are connected!");
       }   
-   }//Constructor
+   }
    
    //Method to search for any possible controllers currently connected
    private void searchForControllers() 
    {
        //Apparently ControllerEnvironment.getDefaultEnvironment().getControllers() gets more other devices than it should
-       //However, through testing, the 2 Xbox controllers are the first ones found so there indexes are 0 and 1 just fyi
+       //However, through testing, the Xbox controllers are the first ones found so there indexes are 0 and 1
        Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
 
        for(int i = 0; i < controllers.length; i++)
@@ -115,13 +91,19 @@ class TheServer
        controllersAreFound = !foundControllers.isEmpty();
        
        //Set booleans to true if corresponding players are connected
-       //This logic only concerns itself with up to two controllers connected
        if(controllersAreFound)
        {
          //Always the first player is connected
          playerOneIsConnected = true;
          System.out.println("Player one is connected!");
-                  
+         int total = 0;
+         /*for(int i = 0; i < foundControllers.size(); i++)
+         {
+            total++;
+         }
+         System.out.println(total);*/
+
+         
          //Check if the two controllers are connected         
          if(foundControllers.size() == 2)
          {
@@ -130,6 +112,11 @@ class TheServer
             System.out.println("Player two is connected!");
          } 
        }       
-   }//searchForControllers()
+   }
 
-}//TheServer
+
+
+
+
+
+}

@@ -146,7 +146,7 @@ class ProcessUserInput extends Thread
                  // X axis
                  if(componentIdentifier == Component.Identifier.Axis.X){
                      xAxisPercentage = axisValueInPercentage;
-                     sendMovement(-1*xAxisPercentage, 'X');
+                     //sendMovement(-1*xAxisPercentage, 'X');
                      continue; // Go to next component.
                  }
                  // Y axis
@@ -158,7 +158,7 @@ class ProcessUserInput extends Thread
                  
                  try
                  {
-                  Thread.sleep(25);
+                  Thread.sleep(30);
                  }
                  catch(Exception ex)
                  {
