@@ -88,8 +88,14 @@ class TheBase:
 	    if speedData[0] == "S":
                 #Go straight backward or forward
                 #Logic to drive motors, one is reversed which is right one
-                self.ser1.write(speedData + "\n\r")
-                self.ser2.write("S" + str(-1*int(speedData[1:])) + "\n\r" )
+                i = 0
+                while True:
+                    if speedData[i] == "X":
+                        break
+                    else:
+                        i += 1
+                self.ser1.write(speedData[0:i] + "\n\r")
+                self.ser2.write("S" + str(-1*int(speedData[i+1:])) + "\n\r" )
             elif speedData[0] == "T":
                 #Turn robot according to how much the thumbstick is pushed
                 #Logic to turn
