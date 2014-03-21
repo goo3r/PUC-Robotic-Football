@@ -20,9 +20,9 @@ Jaime Alvarez	    01-31-14		Initial Implementation
 //-----------------------------------------------------------//
 
 Description:
-This class will simulate the base of each robot.
-It provides functions as driving the motors,
-collect encoder position data, etc.
+This class will simulate the Quarterback.
+It provides functions as driving the flywheel
+motors, control the linear actuator, etc.
 
 '''
 

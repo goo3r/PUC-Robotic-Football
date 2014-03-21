@@ -29,8 +29,8 @@ from TheQuarterback import TheQuarterback
 #The main program to run on the robots
 
 #The IP and Port to receive from
-recIP = "192.168.1.100"
-recPort = 8444
+recIP = "192.168.1.107"
+recPort = 5555
 
 #The IP and Port to send to position data
 send2IP = "127.0.0.1"

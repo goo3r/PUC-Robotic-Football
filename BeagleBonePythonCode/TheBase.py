@@ -164,8 +164,10 @@ class TheBase:
         self.PHIcurrent = self.PHIcurrent + (dDRW - dDLW) / self.lengthOfWheelBase
 		
         #Then X and Y coordinates
-        self.Xcurrent = self.Xcurrent + dDCR*math.sin(-self.PHIcurrent)
-        self.Ycurrent = self.Ycurrent + dDCR*math.cos(self.PHIcurrent)
+        #self.Xcurrent = self.Xcurrent + dDCR*math.sin(-self.PHIcurrent)
+        #self.Ycurrent = self.Ycurrent + dDCR*math.cos(self.PHIcurrent)
+        self.Xcurrent += dDCR*math.cos(self.PHIcurrent)
+        self.Ycurrent += dDCR*math.sin(self.PHIcurrent)
 		
         #Clean up delta changes
         dDRW = dDLW = dDCR = 0
