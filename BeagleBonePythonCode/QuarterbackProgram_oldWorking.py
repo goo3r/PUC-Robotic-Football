@@ -36,40 +36,15 @@ recPort = 5555
 send2IP = "127.0.0.1"
 send2Port = 5551
 
-#Setup sending and receiving threads
-qbSend = TheQuarterback()
-qbReceive = TheQuarterback()
-
-#Setup send thread, by default the thread is set t o "Receive"
-qbSend.job = "Send"
-
-#Start the threads
-qbReceive.start()
-qbSend.start()
+quar2pac = TheQuarterback()
+quar2pac.setupListenSocket(recIP, recPort)
+quar2pac.setupSendSocket(send2IP, send2Port)
+quar2pac.displayCoordinates()
 
 while True:
-    if !qbReceive.isAlive():
-        qbSend.Done = True
-
-if !qbReceive.isAlive() and !qbSend.isAlive():
-    print "Both threads terminated successfully"
-elif !qbReceive.isAlive() and qbSend.isAlive():
-    print "Still sending, will attempt to terminate"
-    qbSend.Done = True
-elif qbReceive.isAlive() and qbSend.isAlive():
-    print "WTF?!"
-
-#quar2pac = TheQuarterback()
-#quar2pac.setupListenSocket(recIP, recPort)
-#quar2pac.setupSendSocket(send2IP, send2Port)
-#quar2pac.displayCoordinates()
-
-#quar2pac.start()
-
-#while True:
-    #quar2pac.retreiveCommands()
-    #if quar2pac.Disconnected == True:
-        #print "Done"
-        #break
+    quar2pac.retreiveCommands()
+    if quar2pac.Disconnected == True:
+        print "Done"
+        break
     #quar2pac.updatePosition()
     #quar2pac.displayCoordinates()

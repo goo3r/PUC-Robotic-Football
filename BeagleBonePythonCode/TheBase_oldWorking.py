@@ -24,14 +24,12 @@ This class will simulate the base of each robot.
 It provides functions as driving the motors,
 collect encoder position data, etc.
 '''
-from threading import Thread
 import socket
 import math
 import Adafruit_BBIO.UART as UART
-import Adafruit_BBIO.GPIO as GPIO
 import serial
 
-class TheBase(Thread):
+class TheBase:
     #The X, Y, and Phi coordinates (X,Y,PHI) initially set to zero.
     Xcurrent = 0.0
     Ycurrent = 0.0
@@ -51,17 +49,10 @@ class TheBase(Thread):
     UART.setup("UART2")
     ser1 = serial.Serial(port = "/dev/ttyO1", baudrate=9600)
     ser2 = serial.Serial(port = "/dev/ttyO2", baudrate=9600)
-    #Make sure to close any previous open serial connections
-    #Then open them for this purpose
     ser1.close()
     ser2.close()
     ser1.open()
     ser2.open()
-
-    #Setup tackle sensor
-    GPIO.setup("P9_23", GPIO.OUT)
-    GPIO.add_event_detect("P9_23", GPIO.RISING)
-    
 
     #Server IP, port, and socket to send position data to
     serverIP = "127.0.0.1"
@@ -71,18 +62,12 @@ class TheBase(Thread):
 
     #Socket to listen for commands from the server
     theSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-    #The mode this thread class will run i.e. "Receive" or "Send"
-    job = "Receive"
-
-    #A variable to tell if it's done running the thread
-    Done = False
+    
 
     #Constructor
     #If for constructing the Quarterback, create the object without any parameters since it'll be the reference
     #If for any other robot, such as the Receiver, then type in the coordinates it'll start off with respect to the Quarterback
     def __init__(self, x = 0.0, y = 0.0, phi = 0.0):
-        Thread.__init__(self)
         self.Xcurrent = x
         self.Ycurrent = y
         self.PHIcurrent = phi
@@ -97,7 +82,7 @@ class TheBase(Thread):
     #And from it, it will differentiate if it will go straight forward
     #Or backwards. It'll also know when to turn and it which direction
     #For going straight forward or backward, the data will contain a value
-    #in the format of 'S255'.
+    #in the format of 'S255'. While turning, the format will be 'TS255'
     def driveBaseMotors(self, speedData):
         if self.ser1.isOpen() and self.ser2.isOpen():
 	    if speedData[0] == "S":
@@ -218,25 +203,13 @@ class TheBase(Thread):
         elif data[0] == "B":
             print "Button: ", data[1:]
         elif data[0] == "D":
-            self.Done = True
+            self.Disconnected = True
         else:
             print "Unknown data"
 
-    def run(self):
-        if self.job == "Receive":
-            while(!self.Done):
-                print "Receiving joystick input"
-                self.testForTackle()
-                self.retreiveCommands()
-            
-        elif self.job == "Send":
-            while(!self.Done):
-                print "Sending position data"
-                self.updatePosition()
+    
         
-    def testForTackle(self):
-        if GPIO.event_detected("P9_23"):
-            print "Tackled"
+        
 
     
     
